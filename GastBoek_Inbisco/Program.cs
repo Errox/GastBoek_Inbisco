@@ -1,16 +1,21 @@
-using GastBoek_Inbisco.Data;
-using GastBoek_Inbisco.Models;
+using Core.DomainModel;
+using Data;
+using Data.EFRepository;
+using DomainService.Repositories;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlite("Data Source=Database.db"));
+
+builder.Services.AddTransient<ICommentRepository, EFCommentRepository>();
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -21,6 +26,13 @@ builder.Services.AddIdentityServer()
 
 builder.Services.AddAuthentication()
     .AddIdentityServerJwt();
+
+// Made for when a user can be admin. This way the user can do more then just leave comments.
+//builder.Services.AddAuthorization(options =>
+//{
+//    options.AddPolicy("RequireVolunteer",
+//        policy => policy.RequireRole("Admin"));
+//});
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
