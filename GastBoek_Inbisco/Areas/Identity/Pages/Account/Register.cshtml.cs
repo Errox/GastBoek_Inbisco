@@ -115,7 +115,7 @@ namespace GastBoek_Inbisco.Areas.Identity.Pages.Account
         }
 
 
-        public async Task OnGetAsync(string returnUrl = null)
+        public void OnGet(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
         }
@@ -131,16 +131,17 @@ namespace GastBoek_Inbisco.Areas.Identity.Pages.Account
                 user.Lastname = Input.LastName;
                 user.Email = Input.Email;
 
-                foreach (var file in Request.Form.Files)
-                {
-                    MemoryStream ms = new MemoryStream();
-                    file.CopyTo(ms);
-                    user.ProfilePicture = ms.ToArray();
+                // Image doesn't work with SQLite image to byte. Maybe saving it to a local folder, but for now, just keep it without image.
+                //foreach (var file in Request.Form.Files)
+                //{
+                //    MemoryStream ms = new MemoryStream();
+                //    file.CopyTo(ms);
+                //    user.ProfilePicture = ms.ToArray();
 
-                    ms.Close();
-                    ms.Dispose();
-                    break;
-                }
+                //    ms.Close();
+                //    ms.Dispose();
+                //    break;
+                //}
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);

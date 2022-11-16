@@ -30,5 +30,11 @@
         /// </summary>
         /// <param name="entity"></param>
         void Remove(TEntity entity);
+
+        // <summery>
+        // Updates TEntity
+        // </summary>
+        // <param name="entity"></param>
+        void Update(int id, TEntity entity);
     }
 }

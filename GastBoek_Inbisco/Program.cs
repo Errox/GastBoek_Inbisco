@@ -1,10 +1,12 @@
-using Core.DomainModel;
+﻿using Core.DomainModel;
 using Data;
 using Data.EFRepository;
 using DomainService.Repositories;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +39,22 @@ builder.Services.AddAuthentication()
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1",
+        Title = "GuestBook",
+        Description = "A API made for guestbook for guests to leave a message.",
+        Contact = new OpenApiContact
+        {
+            Name = "Github repo URL ",
+            Email = string.Empty,
+            Url = new Uri("https://github.com/Errox/Gastboek_Inbisco"),
+        }
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -62,6 +80,8 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
 app.MapRazorPages();
+
+
 
 app.MapFallbackToFile("index.html"); ;
 

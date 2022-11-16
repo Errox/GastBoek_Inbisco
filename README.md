@@ -31,14 +31,12 @@ Je staat vrij in het kiezen van tools en technieken, maar onze voorkeur gaat uit
   - [ ] Deployment
   - [ ] Class
   - [ ] Flow?
-- [ ] A good readme?
-- [ ] Build Model of ERD
-- [ ] Build Repository from model
-- [ ] Build Service from Repository
-  - [ ] Create
-  - [ ] Read
-  - [ ] Update
-  - [ ] Delete
+- [X] Build Model of ERD
+- [X] Build Repository from model
+  - [X] Create
+  - [X] Read
+  - [X] Update
+  - [X] Delete
   - [ ] Moderation ?
 - [ ] Build react from controller/api
 - [ ] Tests for react
