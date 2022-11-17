@@ -15,15 +15,6 @@ Voor dit project heb ik gekozen om voor C# ASP.Net als back end en React als fro
 
  In de folder Postman is een Postman collection te vinden voor de Backend API.
 
-
-## Beschrijving applicatie
- ## Extra info
-
- In de folder diagrammen is de ERD terug terug vinden.
-
- In de folder Postman is een Postman collection te vinden voor de Backend API.
-
-
 ## Beschrijving applicatie
 Maak een gastenboek waarin bezoekers van een website wat gegevens en een berichtje kunnen achterlaten. 
 
