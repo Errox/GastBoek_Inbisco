@@ -19,6 +19,7 @@ export class CommentsAdd extends Component {
     handleSubmit = (event) => {
         (async () => {
             await commentService.addComment(this.state);
+            window.history.go(0);
         })();
     }
 

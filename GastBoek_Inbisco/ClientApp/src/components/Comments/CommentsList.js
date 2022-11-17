@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import CommentService from './CommentService'
 import { Link } from 'react-router-dom';
-import authService from '../api-authorization/AuthorizeService'
 
 export class Comments extends Component {
   static displayName = Comments.name;
