@@ -33,7 +33,6 @@ export class CommentsEdit extends Component {
 		this.setState({
 			[name]: value
 		});
-		console.log(this.state.comment);
 	}
 
 	handleSubmit = (event, values) => {
@@ -53,6 +52,7 @@ export class CommentsEdit extends Component {
 							name="title"
 							type="text"
 							className="form-control"
+							maxLength={255}
 							id="title"
 							value={comment.title}
 							onChange={this.handleChange} />
@@ -65,6 +65,7 @@ export class CommentsEdit extends Component {
 							name="description"
 							type="text"
 							className="form-control"
+							maxLength={255}
 							id="description"
 							value={comment.description}
 							onChange={this.handleChange} />

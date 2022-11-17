@@ -9,7 +9,6 @@ export class CommentsAdd extends Component {
         this.state = {
             description: '',
             title: ''
-
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -19,7 +18,6 @@ export class CommentsAdd extends Component {
     handleSubmit = (event) => {
         (async () => {
             await commentService.addComment(this.state);
-            window.history.go(0);
         })();
     }
 
@@ -41,6 +39,7 @@ export class CommentsAdd extends Component {
     render() {
         return (
             <div>
+                <h1> Add a new comment</h1>
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-group row">
                         <label htmlFor="Title" className="col-sm-2 col-form-label">Title</label>
@@ -48,6 +47,7 @@ export class CommentsAdd extends Component {
                             <input
                                 name="title"
                                 type="text"
+                                maxLength={255}
                                 className="form-control"
                                 id="title"
                                 placeholder="Title"
@@ -62,6 +62,7 @@ export class CommentsAdd extends Component {
                                 name="description"
                                 type="text"
                                 className="form-control"
+                                maxLength={255}
                                 id="description"
                                 placeholder="Description"
                                 value={this.state.description}
