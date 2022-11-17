@@ -36,7 +36,6 @@ export class CommentsEdit extends Component {
 	}
 
 	handleSubmit = (event, values) => {
-		console.log(values);
 		(async () => {
 			await commentService.updateComment(this.commentId, this.state.comment);
 		})();
@@ -91,7 +90,6 @@ export class CommentsEdit extends Component {
 
 	async retrieveFormData() {
 		const data = await commentService.getComment(this.commentId);
-		console.log(data);
 		this.setState({ loading: false });
 		this.state.comment.description = data.description;
 		this.state.comment.title = data.title;

@@ -22,7 +22,6 @@ export class CommentService{
 				body: JSON.stringify(comment),
 				headers: headers,
 			});
-			console.log(response);
 
 			if (response.ok) {
 				return;
@@ -44,9 +43,6 @@ export class CommentService{
 		try {
 			const headers = { 'content-type': 'application/json' };
 			if (token) headers['Authorization'] = `Bearer ${token}`;
-			console.log('ye')
-			console.log(commentId)
-			console.log(comment);
 
 			const response = await fetch('api/comments/' + commentId, {
 				method: 'PUT',
