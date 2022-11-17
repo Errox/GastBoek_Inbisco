@@ -9,7 +9,9 @@ namespace DomainService.Repositories
 {
     public interface ICommentRepository : IGenericRepository<Comment>
     {
-        public List<Comment> GetCommentsFromUser(int id);
+        public List<Comment> GetCommentsFromUser(ApplicationUser user);
+        public List<Comment> GetCommentsWithUsers();
+        public Comment GetSpecificCommentByIdWithUser(int id);
 
     }
 }

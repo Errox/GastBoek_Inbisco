@@ -14,11 +14,12 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Razor.Language.Intermediate;
 using Microsoft.AspNetCore.Authentication;
+using Core.ViewModels;
 
 namespace GastBoek_Inbisco.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("/api/[controller]")]
     public class CommentsController : ControllerBase
     {
         private ICommentRepository _commentRepo;
@@ -30,18 +31,20 @@ namespace GastBoek_Inbisco.Controllers
             _userManager = userManager;
         }
 
-        // GET: api/Comments
+        // GET: comments
         [HttpGet]
-        public ActionResult<List<Comment>> GetComment()
+        public IEnumerable<Comment> Get()
         {
-            return _commentRepo.GetAll().ToList();
+            var comments = _commentRepo.GetCommentsWithUsers();
+            Console.WriteLine(comments);
+            return comments.ToArray();
         }
 
         // GET: api/Comments/5
         [HttpGet("{id}")]
-        public ActionResult<Comment> GetComment(int id)
+        public ActionResult<Comment> Get(int id)
         {
-            Comment comment = _commentRepo.FindByID(id);
+            Comment comment = _commentRepo.GetSpecificCommentByIdWithUser(id);
 
             if (comment == null)
             {
@@ -55,27 +58,36 @@ namespace GastBoek_Inbisco.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Authorize]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutComment(int id, Comment comment)
+        public async Task<IActionResult> Update(int id, AddComment comment)
         {
-            if (id != comment.Id)
+            if (comment == null)
             {
                 return BadRequest();
             }
-            Comment preComment = _commentRepo.FindByID(id); 
+
+            Comment preComment = _commentRepo.GetSpecificCommentByIdWithUser(id); 
             
             if (preComment == null)
             {
                 return BadRequest();
             }
 
-            ApplicationUser user = await _userManager.FindByNameAsync(User.Identity.Name);
+            ApplicationUser user = _userManager.Users.FirstOrDefault(x => x.Id == User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
             if (user.Id != preComment.Author.Id)
             {
                 return Unauthorized();
             }
 
-            _commentRepo.Update(id, comment);
+            Comment newComment = new Comment()
+            {
+                Id = id,
+                Title = comment.Title,
+                Description = comment.Description,
+                Author = user,
+            };
+
+            _commentRepo.Update(id, newComment);
             
             return NoContent();
         }
@@ -84,24 +96,28 @@ namespace GastBoek_Inbisco.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult<Comment>> PostComment(Comment comment)
+        public async Task<ActionResult<Comment>> Add(AddComment comment)
         {
             // Get id of currently logged in
-            ApplicationUser user = await _userManager.FindByNameAsync(User.Identity.Name);
-            comment.Author = user;
-            _commentRepo.Add(comment);
+            ApplicationUser user = _userManager.Users.FirstOrDefault(x => x.Id == User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            return CreatedAtAction("GetComment", new { id = comment.Id }, comment);
+            Comment com = new Comment();
+            com.Title = comment.Title;
+            com.Description = comment.Description;
+            com.Author = user;
+            _commentRepo.Add(com);
+
+            return CreatedAtAction("GetComment", new { id = com.Id }, com);
         }
 
         // DELETE: api/Comments/5
         [Authorize]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteComment(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var comment = _commentRepo.FindByID(id);
+            var comment = _commentRepo.GetSpecificCommentByIdWithUser(id);
 
-            ApplicationUser user = await _userManager.FindByNameAsync(User.Identity.Name);
+            ApplicationUser user = _userManager.Users.FirstOrDefault(x => x.Id == User.FindFirst(ClaimTypes.NameIdentifier).Value);
             if (comment == null)
             {
                 return NotFound();

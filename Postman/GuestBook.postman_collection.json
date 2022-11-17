@@ -1,0 +1,167 @@
+{
+	"info": {
+		"_postman_id": "973810d9-bc15-44e5-ade9-4353e00338f2",
+		"name": "GuestBook",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5852816"
+	},
+	"item": [
+		{
+			"name": "Get all comments (No auth)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44486/api/comments",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44486",
+					"path": [
+						"api",
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get specific comment (No auth)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44486/api/comments/2",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44486",
+					"path": [
+						"api",
+						"comments",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post new Comment (Auth)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\" : \"Titel\",\r\n    \"description\" : \"Beschrijving\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44486/api/comments",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44486",
+					"path": [
+						"api",
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Put existing comment (auth)",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\" : \"New Titel\",\r\n    \"description\": \"Nieuwe beschrijving\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44486/api/comments/27",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44486",
+					"path": [
+						"api",
+						"comments",
+						"27"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete existing comment (auth)",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44486/api/comments/28",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44486",
+					"path": [
+						"api",
+						"comments",
+						"28"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IkRldmVsb3BtZW50IiwidHlwIjoiYXQrand0In0.eyJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo0NDQ4NiIsIm5iZiI6MTY2ODY4ODgxNSwiaWF0IjoxNjY4Njg4ODE1LCJleHAiOjE2Njg2OTI0MTUsImF1ZCI6Ikdhc3RCb2VrX0luYmlzY29BUEkiLCJzY29wZSI6WyJHYXN0Qm9la19JbmJpc2NvQVBJIiwib3BlbmlkIiwicHJvZmlsZSJdLCJhbXIiOlsicHdkIl0sImNsaWVudF9pZCI6Ikdhc3RCb2VrX0luYmlzY28iLCJzdWIiOiJmOWQ2MjQ4OS1jOTExLTQyZmMtOWY5NS02MGE5Yzk4YTIyYjIiLCJhdXRoX3RpbWUiOjE2Njg2ODg4MTQsImlkcCI6ImxvY2FsIiwic2lkIjoiQzY1NDlERUY1NjJEOTcwNjIzODg3MjhERTdGM0RDMzYiLCJqdGkiOiJGREM1NDI1NkE1QTM2RkNGRkEzRjFGNjVEOTdGQkM3MyJ9.LtDQ1VDFnqJ0MSE4I19bwjmdrZ3cwvthXJFKLJeiQSPxoGj_Xx3QtGLwmjy3-4t9QohjQytg7lk8HrQaVTpPs-FMZ_aQjHWx0hxvfbvvLCMvbZjGWpQ0NTzTAzK4zR281bubz4JzMJBIj_x4AmVQRlDlLRH3nnxliTabMSh_rzTIP4q4wKk5KY57JvoUsF2UqCoD1Cdisv_GxZOksJlhxxONIbPh4ieXCy0R_GpXFohHjYdp3PRLshe_LN8wFi_yrrLyfCAf5HfOko11xULL5hnHcmlJ80OTG3CC7OwLKl-htu_Tbid9o-5Bw4PB8B8e-0dMdboJ-8q_gMo5o5VkUA",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "https://localhost"
+		}
+	]
+}
