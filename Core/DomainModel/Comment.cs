@@ -1,9 +1,15 @@
-﻿namespace Core.DomainModel
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Core.DomainModel
 {
     public class Comment
     {
         public int Id { get; set; }
+        [Required]
+        [MaxLength(255, ErrorMessage = "The property {0} doesn't have more than {1} elements")]
         public string Description { get; set; }
+        [Required]
+        [MaxLength(255, ErrorMessage = "The property {0} doesn't have more than {1} elements")]
         public string Title { get; set; }
 
         // Since images can't be stored in SQLite.

@@ -16,32 +16,37 @@ export class Comments extends Component {
 
   static renderCommentsTable(comments) {
       return (
-        <table className='table table-striped' aria-labelledby="tabelLabel">
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th>Author</th>
-                    <th>Created At</th>
-                      <th>Last modified At</th>
-                      <th> Delete </th>
-                      <th> Edit </th>
-                </tr>
-            </thead>
-        <tbody>
-            {comments.map(comment =>
-                <tr key={comment.id}>
-                    <td>{comment.title}</td>
-                    <td>{comment.description}</td>
-                    <td>{comment.author.firstname} {comment.author.lastname}</td>
-                    <td>{comment.createdDate}</td>
-                    <td>{comment.updatedDate}</td>
-                    <td><Link to={'/comments/delete/' + comment.id}>Delete</Link></td>
-                    <td><Link to={'/comments/edit/' + comment.id}>Edit</Link></td>
-                </tr>
-            )}
-        </tbody>
-    </table>
+
+          <div>
+              {comments.map(comment =>
+                  <><div key={comment.id} className="container border border-dark rounded bg-light">
+                      <div className="row border-bottom border-dark">
+                          <div className="col font-weight-bold">{comment.title}</div>
+                          <div className="col">
+                              <div className="float-right">
+                                  <p><Link to={'/comments/delete/' + comment.id}>Delete</Link> | <Link to={'/comments/edit/' + comment.id}>Edit</Link></p>
+                              </div>
+                          </div>
+                      </div>
+                      <div className="row">
+                          <div className="col">
+                              {comment.description}
+                          </div>
+                      </div>
+                      <div className="row border-top border-dark">
+                          <div className="col">By: {comment.author.firstname} {comment.author.lastname}</div>
+                          <div className="col">
+                              <div className="float-right">
+                                  <p>Posted on - {comment.createdDate} <br></br> Last edited - {comment.updatedDate} </p>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                      <hr></hr>
+                  </>
+              )}
+          </div>
+
     );
   }
 

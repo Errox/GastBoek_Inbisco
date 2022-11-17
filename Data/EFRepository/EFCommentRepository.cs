@@ -24,7 +24,7 @@ namespace Data.EFRepository
 
         public List<Comment> GetCommentsWithUsers()
         {
-            return _context.Comments.Include(e => e.Author).OrderByDescending(x => x.UpdatedDate).ToList();
+            return _context.Comments.Include(e => e.Author).OrderByDescending(x => x.CreatedDate).ToList();
         }
 
         public Comment GetSpecificCommentByIdWithUser(int id)
