@@ -3,7 +3,7 @@ import authService from '../components/api-authorization/AuthorizeService'
 export class CommentService{
     async getComments() {
         const token = await authService.getAccessToken();
-        const response = await fetch('api/comments', {
+        const response = await fetch(url, {
             headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
         });
         const data = await response.json();
@@ -14,7 +14,7 @@ export class CommentService{
 		const token = await authService.getAccessToken();
 		try {
 			if (token) headers['Authorization'] = `Bearer ${token}`;
-			const response = await fetch('api/comments', {
+			const response = await fetch(url, {
 				method: 'POST',
 				body: JSON.stringify(comment),
 				headers: headers,
@@ -39,7 +39,7 @@ export class CommentService{
 
 		try {
 			if (token) headers['Authorization'] = `Bearer ${token}`;
-			const response = await fetch('api/comments/' + commentId, {
+			const response = await fetch(url + commentId, {
 				method: 'PUT',
 				body: JSON.stringify(comment),
 				headers: headers,
@@ -63,7 +63,7 @@ export class CommentService{
 		try {
 			if (token) headers['Authorization'] = `Bearer ${token}`;
 
-			const response = await fetch('api/comments/' + commentId, {
+			const response = await fetch(url + commentId, {
 				method: 'DELETE',
 				headers: headers,
 			});
@@ -83,7 +83,7 @@ export class CommentService{
 
 	async getComment(commentId) {
 		const token = await authService.getAccessToken();
-		const response = await fetch('api/comments/' + commentId, {
+		const response = await fetch(url + commentId, {
 			headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
 		});
 		const data = await response.json();
@@ -95,5 +95,6 @@ export class CommentService{
 
 const commentService = new CommentService();
 const headers = { 'content-type': 'application/json' };
+const url = "api/comments/";
 
 export default commentService;

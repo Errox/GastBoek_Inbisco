@@ -35,13 +35,13 @@ namespace Data.EFRepository
         public async Task Add(TEntity entity)
         {
             _context.Set<TEntity>().Add(entity);
-            _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
         public async Task Remove(TEntity entity)
         {
             _context.Set<TEntity>().Remove(entity);
-            _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
         public async Task Update(int id, TEntity entity)
@@ -50,7 +50,7 @@ namespace Data.EFRepository
             if (obj != null)
             {
                 _context.Entry(obj).CurrentValues.SetValues(entity);
-                _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
             }
         }
     }

@@ -18,3 +18,7 @@ code {
   text-decoration: underline;
   color: blue;
 }
+
+.card {
+  margin-bottom: 15px;
+}

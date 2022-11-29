@@ -23,6 +23,12 @@ namespace Data
 
         public DbSet<Comment> Comments { get; set; }
 
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        {
+            OnBeforeSaving();
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
         public override int SaveChanges()
         {
             OnBeforeSaving();
@@ -37,7 +43,7 @@ namespace Data
             foreach (var entry in entries)
             {
                 // It would've been nicer if the baseEntity could've been inhirithed by all classes so
-                // instead of cheacking it's a comment or application we can always use it.
+                // instead of checking it's a comment or application we can always use it.
                 // For now, this is easier to only have it specifically for those that have CreatedDate and UpdatedDate
                 // set UpdatedDate / CreatedDate appropriately
                 // Create a cheack on comment
