@@ -33,18 +33,17 @@ namespace GastBoek_Inbisco.Controllers
 
         // GET: comments
         [HttpGet]
-        public IEnumerable<Comment> Get()
+        public async Task<Array> Get()
         {
-            var comments = _commentRepo.GetCommentsWithUsers();
-            Console.WriteLine(comments);
+            var comments = await _commentRepo.GetCommentsWithUsers();
             return comments.ToArray();
         }
 
         // GET: api/Comments/5
         [HttpGet("{id}")]
-        public ActionResult<Comment> Get(int id)
+        public async Task<ActionResult<Comment>> Get(int id)
         {
-            Comment comment = _commentRepo.GetSpecificCommentByIdWithUser(id);
+            Comment comment = await _commentRepo.GetSpecificCommentByIdWithUser(id);
 
             if (comment == null)
             {
@@ -58,14 +57,14 @@ namespace GastBoek_Inbisco.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Authorize]
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, AddComment comment)
+        public async Task<IActionResult> Update(int id, AddComment updatedComment)
         {
-            if (comment == null)
+            if (updatedComment == null)
             {
                 return BadRequest();
             }
 
-            Comment preComment = _commentRepo.GetSpecificCommentByIdWithUser(id); 
+            Comment preComment = await _commentRepo.GetSpecificCommentByIdWithUser(id); 
             
             if (preComment == null)
             {
@@ -79,15 +78,10 @@ namespace GastBoek_Inbisco.Controllers
                 return Unauthorized();
             }
 
-            Comment newComment = new Comment()
-            {
-                Id = id,
-                Title = comment.Title,
-                Description = comment.Description,
-                Author = user,
-            };
+            preComment.Title = updatedComment.Title;
+            preComment.Description = updatedComment.Description;
 
-            _commentRepo.Update(id, newComment);
+            await _commentRepo.Update(id, preComment);
             
             return NoContent();
         }
@@ -101,11 +95,14 @@ namespace GastBoek_Inbisco.Controllers
             // Get id of currently logged in
             ApplicationUser user = _userManager.Users.FirstOrDefault(x => x.Id == User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            Comment com = new Comment();
-            com.Title = comment.Title;
-            com.Description = comment.Description;
-            com.Author = user;
-            _commentRepo.Add(com);
+            Comment com = new Comment()
+            {
+                Title = comment.Title,
+                Description = comment.Description,
+                Author = user
+            };
+
+            await _commentRepo.Add(com);
 
             return CreatedAtAction("GetComment", new { id = com.Id }, com);
         }
@@ -115,12 +112,17 @@ namespace GastBoek_Inbisco.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var comment = _commentRepo.GetSpecificCommentByIdWithUser(id);
+            var comment = await _commentRepo.GetSpecificCommentByIdWithUser(id);
 
             ApplicationUser user = _userManager.Users.FirstOrDefault(x => x.Id == User.FindFirst(ClaimTypes.NameIdentifier).Value);
             if (comment == null)
             {
                 return NotFound();
+            }
+
+            if (user == null)
+            {
+                return Unauthorized();
             }
 
             if(user.Id != comment.Author.Id)

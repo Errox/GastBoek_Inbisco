@@ -10,31 +10,31 @@
         /// Get all of <typeparamref name="TEntity"/>
         /// </summary>
         /// <returns>An IEnumerable object of TEntity</returns>
-        IEnumerable<TEntity> GetAll();
+        Task<IEnumerable<TEntity>> GetAll();
 
         /// <summary>
         /// Gets the first entity that matches the ID and returns it
         /// </summary>
         /// <param name="ID">ID of the object to find</param>
         /// <returns>The first entity found</returns>
-        TEntity FindByID(int ID);
+        Task<IEnumerable<TEntity>> FindByID(int ID);
 
         /// <summary>
         /// Creates a new entity
         /// </summary>
         /// <param name="entity"></param>
-        void Add(TEntity entity);
+        Task Add(TEntity entity);
 
         /// <summary>
         /// Removes a entity
         /// </summary>
         /// <param name="entity"></param>
-        void Remove(TEntity entity);
+        Task Remove(TEntity entity);
 
         // <summery>
         // Updates TEntity
         // </summary>
         // <param name="entity"></param>
-        void Update(int id, TEntity entity);
+        Task Update(int id, TEntity entity);
     }
 }

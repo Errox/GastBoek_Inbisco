@@ -17,19 +17,19 @@ namespace Data.EFRepository
             _context = context;
         }
 
-        public List<Comment> GetCommentsFromUser(ApplicationUser user)
+        public async Task<List<Comment>> GetCommentsFromUser(ApplicationUser user)
         {
-            return _context.Comments.Include(e => e.Author).Where(x => x.Author == user).ToList();
+            return await _context.Comments.Include(e => e.Author).Where(x => x.Author == user).ToListAsync();
         }
 
-        public List<Comment> GetCommentsWithUsers()
+        public async Task<List<Comment>> GetCommentsWithUsers()
         {
-            return _context.Comments.Include(e => e.Author).OrderByDescending(x => x.CreatedDate).ToList();
+            return await _context.Comments.Include(e => e.Author).OrderByDescending(x => x.CreatedDate).ToListAsync();
         }
 
-        public Comment GetSpecificCommentByIdWithUser(int id)
+        public async Task<Comment> GetSpecificCommentByIdWithUser(int id)
         {
-            return _context.Comments.Include(e => e.Author).FirstOrDefault(x => x.Id == id);
+            return await _context.Comments.Include(e => e.Author).FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }

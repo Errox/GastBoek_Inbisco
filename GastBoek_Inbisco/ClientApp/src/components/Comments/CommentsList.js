@@ -1,77 +1,76 @@
-import React, { Component } from 'react';
-import CommentService from './CommentService'
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import commentService from '../../Services/CommentService';
+import authService from '../api-authorization/AuthorizeService';
+import jwt from 'jwt-decode';
 
-export class Comments extends Component {
-  static displayName = Comments.name;
+export const CommentsList = () => {
+    const { commentId } = useParams();
+	const Navigate = useNavigate();
+	const [ comments, setComments ] = useState([]);
+    const [ userId , setUserId ] = useState(0);
+	const [ loading, setLoading ] = useState(true);
 
-    constructor(props) {
-    super(props);
-        this.state = { comments: [], loading: true };
-    }
+	useEffect(() => {
+		const getComments = async () => {
+			const comments = await commentService.getComments(commentId);
+			setComments(comments);
+			setLoading(false);
+		}
+		getComments();
+	}, [commentId]);
 
-    componentDidMount() {
-        this.populateCommentData();
-    }
+    useEffect(() => {
+        const setUser = async() => {
+            const token = await authService.getAccessToken();
+            const user = jwt(token); 
+            setUserId(user.sub);
+        }
+        setUser();
+    }, [])
 
-  static renderCommentsTable(comments) {
-      return (
 
-          <div>
-              {comments.map(comment =>
-                  <><div key={comment.id} className="container border border-dark rounded bg-light">
-                      <div className="row border-bottom border-dark">
-                          <div className="col font-weight-bold">{comment.title}</div>
-                          <div className="col">
-                              <div className="float-right">
-                                  <p><Link to={'/comments/delete/' + comment.id}>Delete</Link> | <Link to={'/comments/edit/' + comment.id}>Edit</Link></p>
-                              </div>
-                          </div>
-                      </div>
-                      <div className="row">
-                          <div className="col">
-                              {comment.description}
-                          </div>
-                      </div>
-                      <div className="row border-top border-dark">
-                          <div className="col">By: {comment.author.firstname} {comment.author.lastname}</div>
-                          <div className="col">
-                              <div className="float-right">
-                                  <p>Posted on - {comment.createdDate} <br></br> Last edited - {comment.updatedDate} </p>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                      <hr></hr>
-                  </>
-              )}
-          </div>
-
-    );
-  }
-
-  render() {
-    let contents = this.state.loading
-      ? <p><em>Loading...</em></p>
-        : Comments.renderCommentsTable(this.state.comments);
-
-    return (
-      <div>
+	return (
+		<div>
             <h1 id="tabelLabel" >Guest book comments</h1>
             <div className="col-sm-6">
                 <p> Welcome to this guestbook, feel free to leave a message for others to read!</p>
             </div>
             <div className="col-sm-6">
-                <Link to='/comments/add'>Add Comment</Link>
+                <p className="Link" onClick={() => Navigate('/comments/add')}>Add Comment</p>
             </div>
-        {contents}
-      </div>
-    );
-  }
-
-    async populateCommentData() {
-        const data = await CommentService.getComments();
-        this.setState({ comments: data, loading: false });
-    }
-
+			{loading ? (
+				<p><em>Loading...</em></p>
+			) : (
+                comments.map((comment,i) => 
+                    <div key={i} className="container border border-dark rounded bg-light card"> 
+                        <div className="row border-bottom border-dark">
+                            <div className="col font-weight-bold">{comment.title}</div>
+                            <div className="col">
+                                {comment.author.id === userId && (
+                                    <div className="float-right">
+                                        <p className="Link" onClick={() => Navigate('/comments/delete/' + comment.id)}> Delete</p>
+                                        <p className="Link" onClick={() => Navigate('/comments/edit/' + comment.id)}> Edit</p> 
+                                    </div>
+                                )}
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col">
+                            {comment.description}
+                        </div>
+                    </div>
+                    <div className="row border-top border-dark">
+                        <div className="col">By: {comment.author.firstname} {comment.author.lastname}</div>
+                        <div className="col">
+                            <div className="float-right">
+                                <p>Posted on - {comment.createdDate} <br></br> Last edited - {comment.updatedDate} </p>
+                            </div>
+                        </div>
+                        </div>
+                    </div>          
+                )                    
+              )}
+		</div>
+	);
 }
